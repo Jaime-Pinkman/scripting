@@ -1,11 +1,9 @@
-#!/bin/bash
-
 count=1
 wrongs=0
 rights=0
-RED='\e[31m'
-GREEN='\e[32m'
-RESET='\e[0m'
+GREEN="\033[1;32m"
+RED="\033[31m"
+RESET="\033[0m"
 declare -a numbers
 while :
 do
@@ -24,17 +22,21 @@ do
     number=$(( $RANDOM % 10 ))
     if [ $x == $number ]; then
         rights=$((rights+1))
-        number_string="${GREEN}${number}${RESET}"
+        number_string=${GREEN}${x}${RESET}
         numbers+=(${number_string})
         echo "You got it! It was $number"
     else
         wrongs=$((wrongs+1))
-        number_string="${RED}${number}${RESET}"
+        number_string=${RED}${x}${RESET}
         numbers+=(${number_string})
         echo "The number was $number. Lets try one more time!"
     fi
     echo "Hit: $(( ( $rights * 100 ) / $count ))% Miss: $(( ( $wrongs * 100 ) / $count ))%"
-    echo "Last 10 items: ${numbers[@]: -10}"
+    if [ ${#numbers[@]} -lt 9 ]; then
+        echo "Last 10 items: ${numbers[@]}"
+    else
+        echo "Last 10 items: ${numbers[@]: -10}"
+    fi
     count=$((count+1))
     echo
 done
