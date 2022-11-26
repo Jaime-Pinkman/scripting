@@ -1,9 +1,11 @@
 count=1
 wrongs=0
 rights=0
-GREEN="\033[1;32m"
-RED="\033[31m"
-RESET="\033[0m"
+
+# these colors work only on Mac
+GREEN="\033[1;32m"  # change to '\e[32m'
+RED="\033[31m"  # change to '\e[31m'
+RESET="\033[0m"  # change to '\e[0m'
 declare -a numbers
 while :
 do
