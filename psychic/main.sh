@@ -32,7 +32,7 @@ do
         echo "The number was $number. Lets try one more time!"
     fi
     echo "Hit: $(( ( $rights * 100 ) / $count ))% Miss: $(( ( $wrongs * 100 ) / $count ))%"
-    if [ ${#numbers[@]} -lt 9 ]; then
+    if [ ${#numbers[@]} -lt 10 ]; then
         echo "Last 10 items: ${numbers[@]}"
     else
         echo "Last 10 items: ${numbers[@]: -10}"
