@@ -10,23 +10,19 @@ pre=0
 count=0
 
 shuffle() {
-    array_length=${#arr[@]}
-
     # Seed the random number generator
     RANDOM=$$$(date +%s)
 
     # Shuffle the array
-    for ((i=0; i<$array_length; i++)); do
+    for ((i=1; i<$16; i++)); do
         # Generate a random index between 0 and the number of elements in the array
-        j=$(($RANDOM % $array_length))
+        j=$(($RANDOM %15 + 1))
         # Swap the element at index i with the element at index j
         temp=${arr[$i]}
         arr[$i]=${arr[$j]}
         arr[$j]=$temp
     done
 }
-
-set now
 
 check() {
     res=0
@@ -59,10 +55,10 @@ main() {
             now=${i}
         fi
     done
-    declare -i count=0
+    declare -i count=1
     while :
     do
-        #clear
+        clear
 
         for i in {1..16}
         do
@@ -73,17 +69,17 @@ main() {
 
         pre=$now
         mv=0
+        echo "Ход № " $count
 
         read -s -n 1 k
+        #if [ $k -ne 0 ]; then
         mv=(`navigate $k`)
+        count=`expr $count + 1`
 
-        echo $mv
-        if [ $mv -ne 0 ]; then
-            now=`expr $now + $mv`
-            buf=${arr[now]}
-            arr[$now]=${arr[pre]}
-            arr[$pre]=$buf
-        fi
+        now=`expr $now + $mv`
+        buf=${arr[now]}
+        arr[$now]=${arr[pre]}
+        arr[$pre]=$buf
 
     done
 }
