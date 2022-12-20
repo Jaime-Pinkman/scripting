@@ -54,7 +54,6 @@ navigate() {
 
 main() {
     shuffle
-    [ `check` -eq 0 ] && break
     for i in "${!arr[@]}"; do
         if [[ "${arr[$i]}" = "@" ]]; then
             now=${i}
@@ -63,13 +62,14 @@ main() {
     declare -i count=0
     while :
     do
-        clear
+        #clear
 
         for i in {1..16}
         do
             echo -n "${arr[i]}"
             [ `expr $i % 4` -eq 0 ] && printf \\n
         done
+        [ `check` -eq 0 ] && break
 
         pre=$now
         mv=0
@@ -77,7 +77,7 @@ main() {
         read -s -n 1 k
         mv=(`navigate $k`)
 
-
+        echo $mv
         if [ $mv -ne 0 ]; then
             now=`expr $now + $mv`
             buf=${arr[now]}
