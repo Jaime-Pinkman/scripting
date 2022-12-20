@@ -59,7 +59,8 @@ main() {
     while :
     do
         clear
-
+        echo "Ход № " $count
+        printf \\n
         for i in {1..16}
         do
             echo -n "${arr[i]}"
@@ -69,10 +70,11 @@ main() {
 
         pre=$now
         mv=0
-        echo "Ход № " $count
+        printf \\n
+        echo "Ваш ход (q - выход):"
 
         read -s -n 1 k
-        #if [ $k -ne 0 ]; then
+        [ $k = "q" ] && break
         mv=(`navigate $k`)
         count=`expr $count + 1`
 
