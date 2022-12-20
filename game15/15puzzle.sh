@@ -80,9 +80,7 @@ main() {
         mv=0
         printf \\n
         if [[ $flag == 1 ]]; then
-            echo "Неверный ход!
-Невозможно костяшку передвинуть туда.
-Можно выбрать другие ячейки."
+            echo $'Неверный ход! \nНевозможно костяшку передвинуть туда. \nМожно выбрать другие ячейки.'
             printf \\n
         fi
         echo "Ваш ход (q - выход):"
@@ -91,7 +89,6 @@ main() {
         [ $k = "q" ] && break
         mv=(`navigate $k`)
         if ! [[ " ${mov[@]} " =~ " ${mv} " ]]; then
-            # If the number has already been used, skip to the next iteration
             flag=1
             continue
         fi
