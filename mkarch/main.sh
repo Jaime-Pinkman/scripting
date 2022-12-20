@@ -18,27 +18,30 @@ fi
 tar -czvf $name.tar.gz $dir_path
 
 # Generate the 'name' script
-echo '#!/bin/bash' > $name.sh
-echo "unpackdir=." >> $name.sh
-echo 'while getopts ":o:" opt; do' >> $name.sh
-echo '  case $opt in' >> $name.sh
-echo '    o) unpackdir=$OPTARG ;;' >> $name.sh
-echo '    \?) echo "Invalid option: -$OPTARG" >&2 ; exit 1 ;;' >> $name.sh
-echo '    :) echo "Option -$OPTARG requires an argument." >&2 ; exit 1 ;;' >> $name.sh
-echo '  esac' >> $name.sh
-echo 'done' >> $name.sh
-echo >> $name.sh
-echo '# Extract the embedded archive to the specified directory' >> $name.sh
-echo 'tail -n +$(($(grep -n "^__ARCHIVE_BELOW__" $0 | cut -d ":" -f 1)+1)) $0 | base64 -d | gzip -d | tar -xv -C $unpackdir' >> $name.sh
-echo >> $name.sh
-echo '# Exit the script' >> $name.sh
-echo 'exit 0' >> $name.sh
-echo >> $name.sh
-echo '# The embedded archive follows this line' >> $name.sh
-echo '__ARCHIVE_BELOW__' >> $name.sh
+echo '#!/bin/bash' > $name
+echo "unpackdir=." >> $name
+echo 'while getopts ":o:" opt; do' >> $name
+echo '  case $opt in' >> $name
+echo '    o) unpackdir=$OPTARG ;;' >> $name
+echo '    \?) echo "Invalid option: -$OPTARG" >&2 ; exit 1 ;;' >> $name
+echo '    :) echo "Option -$OPTARG requires an argument." >&2 ; exit 1 ;;' >> $name
+echo '  esac' >> $name
+echo 'done' >> $name
+echo >> $name
+echo '# Extract the embedded archive to the specified directory' >> $name
+echo 'tail -n +$(($(grep -n "^__ARCHIVE_BELOW__" $0 | cut -d ":" -f 1)+1)) $0 | base64 -d | gzip -d | tar -xv -C $unpackdir' >> $name
+echo >> $name
+echo '# Exit the script' >> $name
+echo 'exit 0' >> $name
+echo >> $name
+echo '# The embedded archive follows this line' >> $name
+echo '__ARCHIVE_BELOW__' >> $name
 
 # Embed the compressed archive into the 'name' script
-base64 $name.tar.gz >> $name.sh
+base64 $name.tar.gz >> $name
+
+# Remove the compressed archive
+rm $name.tar.gz
 
 # Set the permissions for the new script
-chmod +x $name.sh
+chmod +x $name
