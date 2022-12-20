@@ -69,54 +69,86 @@ navigate() {
 
 # Main function to play the puzzle game
 main() {
-    # Shuffle the puzzle
+    # Shuffle the array
     shuffle
-    # Find the initial position of the empty puzzle piece
+
+    # Find the current position of the "@" symbol in the array
     for i in "${!arr[@]}"; do
         if [[ "${arr[$i]}" = "@" ]]; then
             now=${i}
         fi
     done
-    # Initialize the move counter and a flag for invalid moves
+
+    # Initialize the count of moves to 1
     declare -i count=1
+    # Initialize the flag to 0
     declare -i flag=0
+
     # Start an infinite loop
     while :
     do
-        # Print the current state of the puzzle
-        clear
+        # Print the current move number
         echo "Ход № " $count
+        # Print a newline
         printf \\n
+
+        # Print the current state of the array
         for i in {1..16}
         do
+            # Print the element at index i
             echo -n "${arr[i]}"
+            # If the index is a multiple of 4, print a newline
             [ `expr $i % 4` -eq 0 ] && printf \\n
         done
-        [ `check` -eq 0 ] && break
 
+        # Check if the array is in the original state
+        if [ `check` -eq 0 ]; then
+            # If the array is in the original state, break out of the loop
+            break
+        fi
+
+        # Save the current position of the "@" symbol
         pre=$now
+
+        # Initialize the move to 0
         mv=0
+
+        # Print a newline
         printf \\n
+
+        # If the flag is set, print an error message
         if [[ $flag == 1 ]]; then
             echo $'Неверный ход! \nНевозможно костяшку передвинуть туда. \nМожно выбрать другие ячейки.'
+            # Print a newline
             printf \\n
         fi
+
+        # Prompt the user for their next move
         echo "Ваш ход (q - выход):"
 
+        # Read the user's input
         read -s -n 1 k
+        # If the user entered "q", break out of the loop
         [ $k = "q" ] && break
+        # Calculate the distance to the destination
         mv=(`navigate $k`)
+        # If the distance is not one of the allowed moves, set the flag and continue to the next iteration
         if ! [[ " ${mov[@]} " =~ " ${mv} " ]]; then
             flag=1
             continue
         fi
+        # Reset the flag to 0
         flag=0
-        echo $flag
+        # Increment the count of moves
         count=`expr $count + 1`
 
+        # Update the current position of the "@" symbol
         now=`expr $now + $mv`
+        # Save the element at the new position
         buf=${arr[now]}
+        # Swap the element at the new position with the "@" symbol
         arr[$now]=${arr[pre]}
+        # Swap the "@" symbol with the element that
         arr[$pre]=$buf
 
     done
