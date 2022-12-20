@@ -51,6 +51,7 @@ navigate() {
     done
 
     diff=`expr $dest - $src`
+
     echo $diff
 }
 
@@ -62,6 +63,7 @@ main() {
         fi
     done
     declare -i count=1
+    declare -i flag=0
     while :
     do
         #clear
@@ -77,11 +79,24 @@ main() {
         pre=$now
         mv=0
         printf \\n
+        if [[ $flag == 1 ]]; then
+            echo "Неверный ход!
+Невозможно костяшку передвинуть туда.
+Можно выбрать другие ячейки."
+            printf \\n
+        fi
         echo "Ваш ход (q - выход):"
 
         read -s -n 1 k
         [ $k = "q" ] && break
         mv=(`navigate $k`)
+        if ! [[ " ${mov[@]} " =~ " ${mv} " ]]; then
+            # If the number has already been used, skip to the next iteration
+            flag=1
+            continue
+        fi
+        flag=0
+        echo $flag
         count=`expr $count + 1`
 
         now=`expr $now + $mv`
