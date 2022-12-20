@@ -10,11 +10,17 @@ pre=0
 count=0
 
 shuffle() {
+
+    for i in "${!arr[@]}"; do
+        if [[ "${arr[$i]}" = "@" ]]; then
+            echo ${i}
+        fi
+    done
     # Seed the random number generator
     RANDOM=$$$(date +%s)
 
     # Shuffle the array
-    for ((i=1; i<$16; i++)); do
+    for ((i=1; i<=16; i++)); do
         # Generate a random index between 0 and the number of elements in the array
         j=$(($RANDOM %15 + 1))
         # Swap the element at index i with the element at index j
@@ -58,7 +64,7 @@ main() {
     declare -i count=1
     while :
     do
-        clear
+        #clear
         echo "Ход № " $count
         printf \\n
         for i in {1..16}
